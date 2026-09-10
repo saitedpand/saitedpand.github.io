@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cs1.6机器人版-单机对战机器人设置与玩法指南</title>
+<meta name="description" content="cs1.6机器人版介绍与使用指南：了解CS1.6机器人版是什么、如何添加机器人、调整难度与队伍、常用控制台命令、单机练习与离线对战玩法，以及常见问题解答。">
+<meta name="keywords" content="cs1.6机器人版,CS1.6机器人,CS1.6单机版,cs1.6加机器人,CS1.6机器人命令,反恐精英1.6机器人">
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+<style>
+:root{
+  --bg:#11140f;
+  --bg2:#181c14;
+  --panel:#1e2318;
+  --panel2:#252b1d;
+  --line:#3a4230;
+  --accent:#c8f04a;
+  --accent2:#8fb52a;
+  --text:#e8ecdf;
+  --muted:#9aa389;
+  --warn:#e0a83c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",Arial,sans-serif;
+  line-height:1.75;
+  font-size:16px;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{width:100%;max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ===== 顶部 ===== */
+.topbar{
+  background:#0c0e0a;
+  border-bottom:1px solid var(--line);
+  font-size:13px;
+  color:var(--muted);
+}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:38px;flex-wrap:wrap;gap:6px}
+.topbar b{color:var(--accent);font-weight:600}
+
+header.site{
+  background:linear-gradient(180deg,#1a2013 0%,#12160d 100%);
+  border-bottom:2px solid var(--accent2);
+  position:sticky;top:0;z-index:50;
+}
+.head-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:18px;padding:14px 0;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .mark{
+  width:44px;height:44px;flex:0 0 44px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  color:#141a08;font-weight:900;font-size:18px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:8px;letter-spacing:-1px;
+  box-shadow:0 0 0 2px #0c0e0a,0 0 14px rgba(200,240,74,.35);
+}
+.brand h1{font-size:20px;line-height:1.2;letter-spacing:.5px}
+.brand span{font-size:12px;color:var(--muted);letter-spacing:2px}
+
+nav.mainnav ul{display:flex;list-style:none;gap:4px;flex-wrap:wrap}
+nav.mainnav a{
+  display:block;padding:8px 14px;font-size:14px;color:#cfd6bf;
+  border-radius:6px;border:1px solid transparent;transition:.2s;
+}
+nav.mainnav a:hover{background:var(--panel2);color:var(--accent);border-color:var(--line)}
+
+/* ===== 首屏 ===== */
+.hero{
+  position:relative;
+  background:
+    radial-gradient(circle at 78% 22%,rgba(200,240,74,.14),transparent 52%),
+    radial-gradient(circle at 12% 88%,rgba(143,181,42,.12),transparent 55%),
+    repeating-linear-gradient(45deg,rgba(255,255,255,.014) 0 2px,transparent 2px 8px),
+    #141a0d;
+  border-bottom:1px solid var(--line);
+  overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 60%,rgba(17,20,15,.9));
+  pointer-events:none;
+}
+.hero-inner{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1.35fr .95fr;gap:40px;
+  padding:52px 0 56px;align-items:center;
+}
+.hero-tag{
+  display:inline-block;font-size:12px;letter-spacing:2px;
+  color:#141a08;background:var(--accent);
+  padding:3px 10px;border-radius:3px;font-weight:700;margin-bottom:16px;
+}
+.hero h2{
+  font-size:clamp(26px,4vw,40px);line-height:1.3;margin-bottom:16px;
+  letter-spacing:.5px;
+}
+.hero h2 em{font-style:normal;color:var(--accent);text-shadow:0 0 18px rgba(200,240,74,.35)}
+.hero p.lead{color:#c2cbb0;font-size:16px;margin-bottom:22px;max-width:640px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{
+  display:inline-block;padding:11px 22px;border-radius:6px;
+  font-size:15px;font-weight:600;transition:.2s;border:1px solid transparent;
+}
+.btn-primary{background:var(--accent);color:#141a08}
+.btn-primary:hover{background:#d8ff5e;box-shadow:0 0 20px rgba(200,240,74,.4)}
+.btn-ghost{border-color:var(--line);color:#dfe6d0;background:rgba(255,255,255,.03)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+.hero-panel{
+  background:rgba(20,26,13,.86);
+  border:1px solid var(--line);border-radius:10px;
+  padding:20px 22px;backdrop-filter:blur(2px);
+}
+.hero-panel h3{
+  font-size:14px;color:var(--accent);letter-spacing:1px;
+  margin-bottom:12px;padding-bottom:10px;border-bottom:1px dashed var(--line);
+}
+.hero-panel ul{list-style:none;font-size:14px;color:#c6cdb8}
+.hero-panel li{
+  display:flex;gap:10px;padding:7px 0;border-bottom:1px solid rgba(58,66,48,.45);
+}
+.hero-panel li:last-child{border-bottom:none}
+.hero-panel li i{
+  font-style:normal;color:var(--accent2);font-weight:700;flex:0 0 auto;
+}
+
+/* ===== 通用区块 ===== */
+section{padding:52px 0}
+section.alt{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.sec-head{margin-bottom:28px}
+.sec-head .kicker{
+  font-size:12px;letter-spacing:3px;color:var(--accent2);
+  text-transform:uppercase;display:block;margin-bottom:8px;
+}
+.sec-head h2{font-size:clamp(20px,3vw,27px);letter-spacing:.5px}
+.sec-head p{color:var(--muted);font-size:14.5px;margin-top:8px;max-width:760px}
+
+/* ===== 卡片网格 ===== */
+.grid{display:grid;gap:18px}
+.grid-3{grid-template-columns:repeat(3,1fr)}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+.grid-2{grid-template-columns:repeat(2,1fr)}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:20px;transition:.22s;position:relative;overflow:hidden;
+}
+.card:hover{border-color:var(--accent2);transform:translateY(-3px);background:var(--panel2)}
+.card .num{
+  font-size:12px;font-weight:800;color:#141a08;background:var(--accent2);
+  width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:12px;
+}
+.card h3{font-size:16.5px;margin-bottom:8px;color:#eef3e2}
+.card p{font-size:14px;color:#a9b39a;line-height:1.7}
+.card .tagline{
+  display:inline-block;font-size:11.5px;color:var(--accent);
+  border:1px solid rgba(200,240,74,.4);border-radius:3px;
+  padding:1px 7px;margin-bottom:10px;letter-spacing:.5px;
+}
+
+/* ===== 命令表 ===== */
+.cmd-table{
+  width:100%;border-collapse:collapse;font-size:14px;
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+}
+.cmd-table thead th{
+  background:#262d1c;color:var(--accent);text-align:left;
+  padding:12px 14px;font-size:13px;letter-spacing:1px;font-weight:600;
+  border-bottom:1px solid var(--line);
+}
+.cmd-table td{padding:12px 14px;border-bottom:1px solid rgba(58,66,48,.5);vertical-align:top;color:#b9c2a9}
+.cmd-table tbody tr:hover{background:rgba(200,240,74,.05)}
+.cmd-table tbody tr:last-child td{border-bottom:none}
+.cmd-table code{
+  font-family:Consolas,Monaco,"Courier New",monospace;
+  background:#0f120b;color:var(--accent);
+  padding:2px 7px;border-radius:4px;font-size:13px;
+  border:1px solid #333b26;white-space:nowrap;
+}
+.table-scroll{overflow-x:auto;border-radius:10px}
+
+/* ===== 步骤 ===== */
+.steps{counter-reset:step;display:grid;gap:16px}
+.step{
+  display:flex;gap:18px;background:var(--panel);
+  border:1px solid var(--line);border-left:3px solid var(--accent2);
+  border-radius:8px;padding:18px 20px;
+}
+.step .idx{
+  flex:0 0 34px;height:34px;border-radius:50%;
+  background:#0f120b;border:1px solid var(--accent2);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;
+}
+.step h3{font-size:16px;margin-bottom:6px}
+.step p{font-size:14px;color:#a9b39a}
+
+/* ===== 侧栏布局 ===== */
+.split{display:grid;grid-template-columns:1.6fr 1fr;gap:28px;align-items:start}
+.aside-box{
+  background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:20px;margin-bottom:18px;
+}
+.aside-box h3{
+  font-size:15px;color:var(--accent);margin-bottom:12px;
+  padding-bottom:9px;border-bottom:1px solid var(--line);letter-spacing:.5px;
+}
+.aside-box ul{list-style:none;font-size:14px}
+.aside-box li{padding:8px 0;border-bottom:1px dashed rgba(58,66,48,.7);color:#b4bda4;display:flex;justify-content:space-between;gap:10px}
+.aside-box li:last-child{border-bottom:none}
+.aside-box li span{color:var(--accent2);font-weight:600;flex:0 0 auto}
+.note{
+  background:rgba(224,168,60,.08);border:1px solid rgba(224,168,60,.35);
+  border-left:3px solid var(--warn);border-radius:8px;padding:16px 18px;
+  font-size:14px;color:#d8cfa8;
+}
+.note strong{color:var(--warn)}
+
+/* ===== FAQ ===== */
+.faq-item{
+  background:var(--panel);border:1px solid var(--line);border-radius:8px;
+  margin-bottom:12px;overflow:hidden;
+}
+.faq-q{
+  width:100%;text-align:left;background:none;border:none;color:#eaf0dd;
+  font-size:15.5px;font-weight:600;padding:16px 20px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;
+  font-family:inherit;transition:.2s;
+}
+.faq-q:hover{color:var(--accent)}
+.faq-q .ico{
+  flex:0 0 22px;height:22px;border-radius:4px;background:#0f120b;
+  border:1px solid var(--line);color:var(--accent);
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;
+  transition:.25s;
+}
+.faq-item.open .faq-q .ico{transform:rotate(45deg);background:var(--accent);color:#141a08}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+  font-size:14px;color:#a9b39a;
+}
+.faq-a .inner{padding:0 20px 18px;border-top:1px solid rgba(58,66,48,.5);padding-top:14px}
+.faq-item.open .faq-a{max-height:420px}
+
+/* ===== 页脚 ===== */
+footer.site{
+  background:#0b0d08;border-top:2px solid var(--accent2);
+  padding:44px 0 24px;font-size:14px;
+}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:30px;margin-bottom:30px}
+.foot-grid h4{font-size:14px;color:var(--accent);margin-bottom:14px;letter-spacing:1px}
+.foot-grid p{color:#8d967c;font-size:13.5px;line-height:1.8}
+.foot-grid ul{list-style:none}
+.foot-grid li{margin-bottom:9px}
+.foot-grid li a{color:#9aa389;font-size:13.5px;transition:.2s}
+.foot-grid li a:hover{color:var(--accent)}
+.foot-bottom{
+  border-top:1px solid #232a1b;padding-top:18px;
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  color:#6f785f;font-size:13px;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width:980px){
+  .hero-inner{grid-template-columns:1fr;gap:28px;padding:38px 0 42px}
+  .split{grid-template-columns:1fr}
+  .grid-4{grid-template-columns:repeat(2,1fr)}
+  .grid-3{grid-template-columns:repeat(2,1fr)}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:24px}
+}
+@media (max-width:640px){
+  body{font-size:15px}
+  .head-inner{padding:12px 0}
+  nav.mainnav ul{gap:2px}
+  nav.mainnav a{padding:7px 10px;font-size:13px}
+  .grid-3,.grid-4,.grid-2{grid-template-columns:1fr}
+  section{padding:38px 0}
+  .hero h2{font-size:24px}
+  .cmd-table{font-size:13px}
+  .cmd-table thead th,.cmd-table td{padding:10px}
+  .foot-grid{grid-template-columns:1fr}
+  .step{padding:15px 16px;gap:13px}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span>CS1.6 单机对战资料站 · 机器人配置与玩法整理</span>
+    <span>当前栏目：<b>机器人版使用指南</b></span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap head-inner">
+    <div class="brand">
+      <div class="mark">CS</div>
+      <div>
+        <h1>CS1.6 机器人版</h1>
+        <span>单机 · 离线 · 人机对战</span>
+      </div>
+    </div>
+    <nav class="mainnav" aria-label="主导航">
+      <ul>
+        <li><a href="#intro">版本说明</a></li>
+        <li><a href="#howto">添加机器人</a></li>
+        <li><a href="#commands">控制台命令</a></li>
+        <li><a href="#practice">练习玩法</a></li>
+        <li><a href="#tips">注意事项</a></li>
+        <li><a href="#faq">常见问题</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- 首屏 -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <span class="hero-tag">COUNTER-STRIKE 1.6 · BOT</span>
+        <h2>cs1.6机器人版：<em>不联网也能打一场完整对局</em></h2>
+        <p class="lead">
+          CS1.6 机器人版指的是在《反恐精英 1.6》中内置或外挂机器人（Bot）程序，让玩家在没有真人对手、没有网络服务器的情况下，也能进行 5v5 的人机对战。它适合练枪、熟悉地图、测试战术，也适合网络条件不佳时随时开一局。
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#howto">查看添加机器人步骤</a>
+          <a class="btn btn-ghost" href="#commands">常用控制台命令</a>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <h3>机器人版能做什么</h3>
+        <ul>
+          <li><i>01</i><span>离线与机器人组队、对抗，不依赖外网服务器</span></li>
+          <li><i>02</i><span>自定义机器人数量、难度、阵营与名字</span></li>
+          <li><i>03</i><span>在 de_dust2、cs_office 等经典地图上反复练习</span></li>
+          <li><i>04</i><span>用于枪法热身、投掷物点位记忆与走位训练</span></li>
+          <li><i>05</i><span>配合局域网，与身边朋友一起加入同一局</span></li>
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 版本说明 -->
+  <section id="intro">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">VERSION</span>
+        <h2>先弄清楚：什么是 CS1.6 机器人版</h2>
+        <p>“机器人版”并不是一个官方单独发售的版本名称，而是玩家社区对“带 Bot 功能的 CS1.6 客户端”的习惯叫法。理解它的构成，能避免下载到来源不明的文件。</p>
+      </div>
+      <div class="grid grid-3">
+        <article class="card">
+          <div class="num">1</div>
+          <h3>游戏本体</h3>
+          <p>指《反恐精英 1.6》（Counter-Strike 1.6），基于 GoldSrc 引擎，包含经典的爆破、人质、暗杀等模式与大量社区地图。</p>
+        </article>
+        <article class="card">
+          <div class="num">2</div>
+          <h3>机器人程序</h3>
+          <p>常见的是 ZBot 一类 Bot 模块，通过 <code>mp.dll</code> 之类的组件加载。它让游戏能够在本地生成有 AI 行为的虚拟玩家。</p>
+        </article>
+        <article class="card">
+          <div class="num">3</div>
+          <h3>启动方式</h3>
+          <p>既可以在开始菜单选择“新建游戏”后由系统自动填充机器人，也可以在控制台用命令手动添加、踢出和调整。</p>
+        </article>
+        <article class="card">
+          <div class="num">4</div>
+          <h3>与联机版的区别</h3>
+          <p>机器人版核心是本地运行，延迟取决于本机性能；联机版则连接远程服务器，对手是真人，两者可以共用同一份游戏文件。</p>
+        </article>
+        <article class="card">
+          <div class="num">5</div>
+          <h3>常见来源形式</h3>
+          <p>有的是完整整合包，有的是在原版基础上补入 Bot 文件。选择时应优先考虑文件结构清晰、说明完整的来源。</p>
+        </article>
+        <article class="card">
+          <div class="num">6</div>
+          <h3>适用人群</h3>
+          <p>刚接触 CS 的新手、想随时热身的老玩家、以及需要稳定环境做地图测试或战术演练的人。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 添加机器人 -->
+  <section class="alt" id="howto">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">HOW TO</span>
+        <h2>如何在 CS1.6 里添加机器人</h2>
+        <p>不同整合包的菜单文字可能略有差异，但整体流程基本一致。下面按从简到细的顺序排列。</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="idx">1</div>
+          <div>
+            <h3>通过菜单快速开局</h3>
+            <p>进入游戏主界面后选择“新建游戏”，挑选地图并设置人数，进入地图后系统通常会按设定自动加入机器人。这是最省事的方式，适合只想立刻开打的情况。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="idx">2</div>
+          <div>
+            <h3>启用控制台</h3>
+            <p>若选项中没有直接添加机器人的按钮，需要在设置中开启开发者控制台，之后按 <code>~</code> 键呼出命令输入框。多数 Bot 相关操作都在这里完成。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="idx">3</div>
+          <div>
+            <h3>用命令添加机器人</h3>
+            <p>输入 <code>bot_add</code> 添加一个机器人，<code>bot_add_t</code> 加入恐怖分子阵营，<code>bot_add_ct</code> 加入反恐精英阵营。反复执行即可逐步补足人数。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="idx">4</div>
+          <div>
+            <h3>调整难度与数量</h3>
+            <p>用 <code>bot_difficulty</code> 设定整体难度（0 到 3），用 <code>bot_quota</code> 设定机器人总数。数值越高，反应速度和命中率通常越强。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="idx">5</div>
+          <div>
+            <h3>保存为配置文件（可选）</h3>
+            <p>如果每次都想用同一套参数，可以把命令写进 <code>userconfig.cfg</code> 或自定义 cfg 文件，在开局后通过 <code>exec</code> 一次性载入。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 命令表 + 侧栏 -->
+  <section id="commands">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">CONSOLE</span>
+        <h2>常用机器人控制台命令速查</h2>
+        <p>下表列出的是社区中较常见的 Bot 命令，具体是否生效取决于你所使用的 Bot 模块版本。输入命令前请确保已进入一张地图。</p>
+      </div>
+
+      <div class="split">
+        <div>
+          <div class="table-scroll">
+            <table class="cmd-table">
+              <thead>
+                <tr>
+                  <th style="width:30%">命令</th>
+                  <th style="width:38%">作用</th>
+                  <th style="width:32%">说明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code>bot_add</code></td>
+                  <td>添加一个机器人</td>
+                  <td>由系统自动分配阵营</td>
+                </tr>
+                <tr>
+                  <td><code>bot_add_t</code></td>
+                  <td>添加恐怖分子机器人</td>
+                  <td>补足 T 方人数时使用</td>
+                </tr>
+                <tr>
+                  <td><code>bot_add_ct</code></td>
+                  <td>添加反恐精英机器人</td>
+                  <td>补足 CT 方人数时使用</td>
+                </tr>
+                <tr>
+                  <td><code>bot_kick</code></td>
+                  <td>踢出机器人</td>
+                  <td>可加名字只踢指定目标</td>
+                </tr>
+                <tr>
+                  <td><code>bot_kill</code></td>
+                  <td>杀死机器人</td>
+                  <td>常用于快速重置局面</td>
+                </tr>
+                <tr>
+                  <td><code>bot_difficulty 0-3</code></td>
+                  <td>设置机器人难度</td>
+                  <td>数值越大通常越强</td>
+                </tr>
+                <tr>
+                  <td><code>bot_quota 数值</code></td>
+                  <td>设定机器人总数</td>
+                  <td>控制整局的人机规模</td>
+                </tr>
+                <tr>
+                  <td><code>bot_stop 1</code></td>
+                  <td>让机器人停止行动</td>
+                  <td>便于观察地图与走位</td>
+                </tr>
+                <tr>
+                  <td><code>bot_knives_only</code></td>
+                  <td>机器人只用刀</td>
+                  <td>部分版本支持，用于近战练习</td>
+                </tr>
+                <tr>
+                  <td><code>bot_chatter off</code></td>
+                  <td>关闭机器人语音</td>
+                  <td>减少无线电干扰</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="note" style="margin-top:18px">
+            <strong>提示：</strong>命令是否可用与 Bot 模块版本直接相关。如果输入后提示未知命令，说明当前加载的机器人程序不支持该指令，不必反复尝试，换用本版本说明文档中列出的命令即可。
+          </div>
+        </div>
+
+        <aside>
+          <div class="aside-box">
+            <h3>参数建议参考</h3>
+            <ul>
+              <li><span>新手熟悉地图</span>难度 0–1</li>
+              <li><span>日常热身</span>难度 2</li>
+              <li><span>枪法压力训练</span>难度 3</li>
+              <li><span>战术演练</span>固定人数 5v5</li>
+              <li><span>地图测试</span>bot_stop 1</li>
+            </ul>
+          </div>
+          <div class="aside-box">
+            <h3>相关关键词</h3>
+            <ul>
+              <li><span>CS1.6 单机版</span></li>
+              <li><span>CS1.6 加机器人</span></li>
+              <li><span>CS1.6 机器人命令</span></li>
+              <li><span>CS1.6 局域网</span></li>
+              <li><span>CS1.6 练枪地图</span></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- 练习玩法 -->
+  <section class="alt" id="practice">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">PRACTICE</span>
+        <h2>用机器人版做哪些训练更有效</h2>
+        <p>机器人行为模式和真人不同，但用对场景，它依然是性价比很高的练习工具。关键是明确每次练习的目标。</p>
+      </div>
+      <div class="grid grid-4">
+        <article class="card">
+          <span class="tagline">枪法</span>
+          <h3>静态与移动靶</h3>
+          <p>把机器人固定在较近距离，专注压枪节奏与爆头线高度。难度调低时更适合纠正动作，而不是追求击杀数。</p>
+        </article>
+        <article class="card">
+          <span class="tagline">身法</span>
+          <h3>走位与卡点</h3>
+          <p>在熟悉的地图上反复练习常见架枪点与转点路线，配合 <code>bot_stop</code> 观察掩体与视野关系。</p>
+        </article>
+        <article class="card">
+          <span class="tagline">投掷物</span>
+          <h3>烟雾与闪光点位</h3>
+          <p>机器人不会像真人那样频繁变位，适合用来验证投掷物落点是否稳定，确认后再用于实战。</p>
+        </article>
+        <article class="card">
+          <span class="tagline">意识</span>
+          <h3>残局处理</h3>
+          <p>设定 1v2、1v3 的残局，训练听声辨位、换弹时机与保枪判断，比单纯刷击杀更有价值。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 注意事项 -->
+  <section id="tips">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">NOTICE</span>
+        <h2>使用机器人版时的注意事项</h2>
+        <p>这类资源长期在社区中流传，版本杂乱，以下几点能帮你减少不必要的麻烦。</p>
+      </div>
+      <div class="grid grid-2">
+        <article class="card">
+          <h3>文件来源要谨慎</h3>
+          <p>优先选择结构清晰、有明确版本说明的整合包。对体积异常、夹带额外可执行程序的压缩包保持警惕，安装前可先做安全扫描。</p>
+        </article>
+        <article class="card">
+          <h3>区分单机与联机</h3>
+          <p>机器人相关文件通常只影响本地游戏。若打算连接正规对战平台，应使用平台要求的客户端，避免因文件不一致导致无法进入。</p>
+        </article>
+        <article class="card">
+          <h3>难度不等于真实水平</h3>
+          <p>高难度机器人主要提升的是反应与命中，并不代表真人玩家的战术配合。把机器人当热身工具，而不是水平标尺。</p>
+        </article>
+        <article class="card">
+          <h3>参数改动记得备份</h3>
+          <p>修改 cfg 文件或替换 Bot 组件前，先复制一份原文件。出现异常时可以直接还原，避免重装整个游戏。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="alt" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="kicker">FAQ</span>
+        <h2>常见问题解答</h2>
+        <p>以下问题来自玩家在配置机器人版时较常遇到的情况，答案以通用情况为准，具体表现可能因版本而异。</p>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span>输入 bot_add 没有反应怎么办？</span>
+          <span class="ico">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="inner">
+            先确认已经进入一张地图（未开局时命令通常无效），再确认当前客户端确实加载了 Bot 模块。如果提示“未知命令”，说明这一版没有内置机器人程序，需要更换为带 Bot 的版本或补入相应组件。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span>机器人数量为什么加不上去？</span>
+          <span class="ico">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="inner">
+            多数情况下是 <code>bot_quota</code> 限制了总数，或地图本身的人数上限较低。可以先把 quota 调高，再逐次执行添加命令；若仍无效，检查是否同时存在其他人数限制参数。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span>机器人版可以和朋友一起玩吗？</span>
+          <span class="ico">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="inner">
+            可以。在自己电脑上建立局域网主机，让处于同一网络的朋友加入，机器人会与真人玩家混合在同一局中。跨网络联机则需要借助对战平台或服务器，具体以平台规则为准。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span>怎样让机器人变强或变弱？</span>
+          <span class="ico">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="inner">
+            使用 <code>bot_difficulty</code> 调整整体难度，数值区间通常为 0 到 3。部分版本还支持单独设置某个机器人的能力。难度变化主要体现在反应速度、瞄准精度和开火判断上。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span>机器人名字能改吗？</span>
+          <span class="ico">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="inner">
+            可以。机器人名称一般存放在 Bot 模块对应的配置文件（如 names 类文本文件）中，按格式增删条目即可。修改前建议备份原文件，避免格式错误导致机器人无法生成。
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" type="button">
+          <span>机器人会不会影响游戏流畅度？</span>
+          <span class="ico">+</span>
+        </button>
+        <div class="faq-a">
+          <div class="inner">
+            机器人由本机运算，数量越多、难度越高，对处理器和内存的占用越明显。配置较低的电脑可以适当减少机器人数量，或降低画面分辨率与特效来换取更稳定的帧数。
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>关于本站</h4>
+        <p>本站整理 CS1.6 机器人版的相关概念、配置方式与练习思路，内容面向希望离线进行人机对战的玩家，帮助快速上手并合理使用机器人功能。</p>
+      </div>
+      <div>
+        <h4>快速导航</h4>
+        <ul>
+          <li><a href="#intro">版本说明</a></li>
+          <li><a href="#howto">添加机器人</a></li>
+          <li><a href="#commands">控制台命令</a></li>
+          <li><a href="#practice">练习玩法</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>相关内容</h4>
+        <ul>
+          <li><a href="#tips">使用注意事项</a></li>
+          <li><a href="#faq">常见问题</a></li>
+          <li><a href="#commands">参数建议</a></li>
+          <li><a href="#practice">训练方向</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>说明</h4>
+        <p>页面内容为经验性整理，不涉及任何文件下载与安装引导。游戏名称与相关商标归其权利人所有。</p>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>CS1.6 机器人版 · 单机对战资料整理</span>
+      <span>内容仅供参考，请以实际版本表现为准</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.faq-item');
+  items.forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', function(){
+      var isOpen = item.classList.contains('open');
+      items.forEach(function(other){
+        other.classList.remove('open');
+      });
+      if(!isOpen){
+        item.classList.add('open');
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+  </html>
